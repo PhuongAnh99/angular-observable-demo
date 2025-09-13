@@ -12,7 +12,6 @@ import { UserService } from '../../services/user.service';
 })
 export class UserFormComponent implements OnInit {
   userForm!: FormGroup;
-  user$!: Observable<User>;
   isEditMode = false;
 
   constructor(

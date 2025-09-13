@@ -12,7 +12,6 @@ import { PostService } from '../../services/post.service';
 })
 export class PostFormComponent implements OnInit {
   postForm!: FormGroup;
-  post$!: Observable<Post>;
   isEditMode = false;
 
   constructor(

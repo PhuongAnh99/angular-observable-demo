@@ -12,7 +12,6 @@ import { CommentService } from '../../services/comment.service';
 })
 export class CommentFormComponent implements OnInit {
   commentForm!: FormGroup;
-  comment$!: Observable<Comment>;
   isEditMode = false;
 
   constructor(
