@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-12">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Comments</h2>
+      <button class="btn btn-primary" routerLink="new">
+        <i class="fas fa-plus"></i> Add Comment
+      </button>
+    </div>
+
+    <div class="row" *ngIf="comments$ | async as comments">
+      <div class="col-md-6 col-lg-4 mb-3" *ngFor="let comment of comments">
+        <div class="card h-100">
+          <div class="card-body">
+            <h6 class="card-title">{{ comment.name }}</h6>
+            <p class="card-text">{{ comment.body | slice : 0 : 100 }}...</p>
+            <div class="card-text">
+              <small class="text-muted">
+                <strong>Email:</strong> {{ comment.email }}<br />
+                <strong>Post ID:</strong> {{ comment.postId }}
+              </small>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a
+              [routerLink]="[comment.id, 'edit']"
+              class="btn btn-outline-secondary btn-sm"
+              >Edit</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!(comments$ | async)" class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+</div>

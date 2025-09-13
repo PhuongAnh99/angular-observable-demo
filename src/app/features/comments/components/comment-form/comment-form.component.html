@@ -1,0 +1,118 @@
+<div class="row">
+  <div class="col-12">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>{{ isEditMode ? "Edit Comment" : "Add New Comment" }}</h2>
+      <button class="btn btn-outline-secondary" routerLink="/comments">
+        <i class="fas fa-arrow-left"></i> Back to Comments
+      </button>
+    </div>
+
+    <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Comment Information</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="name" class="form-label">Name *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  formControlName="name"
+                />
+                <div
+                  class="invalid-feedback"
+                  *ngIf="
+                    commentForm.get('name')?.invalid &&
+                    commentForm.get('name')?.touched
+                  "
+                >
+                  Name is required
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="email" class="form-label">Email *</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  formControlName="email"
+                />
+                <div
+                  class="invalid-feedback"
+                  *ngIf="
+                    commentForm.get('email')?.invalid &&
+                    commentForm.get('email')?.touched
+                  "
+                >
+                  Valid email is required
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="body" class="form-label">Comment *</label>
+            <textarea
+              class="form-control"
+              id="body"
+              formControlName="body"
+              rows="4"
+            ></textarea>
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                commentForm.get('body')?.invalid &&
+                commentForm.get('body')?.touched
+              "
+            >
+              Comment is required
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="postId" class="form-label">Post ID *</label>
+            <input
+              type="number"
+              class="form-control"
+              id="postId"
+              formControlName="postId"
+              min="1"
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                commentForm.get('postId')?.invalid &&
+                commentForm.get('postId')?.touched
+              "
+            >
+              Valid Post ID is required
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="commentForm.invalid"
+        >
+          {{ isEditMode ? "Update Comment" : "Create Comment" }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary ms-2"
+          routerLink="/comments"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
