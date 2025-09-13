@@ -7,7 +7,9 @@
       </button>
     </div>
 
-    <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+    <!-- Sử dụng async pipe để tự động subscribe/unsubscribe -->
+    <div *ngIf="comment$ | async as comment">
+      <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
       <div class="card">
         <div class="card-header">
           <h5 class="mb-0">Comment Information</h5>
@@ -113,6 +115,14 @@
           Cancel
         </button>
       </div>
-    </form>
+      </form>
+    </div>
+    
+    <!-- Loading state -->
+    <div *ngIf="!(comment$ | async)" class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
   </div>
 </div>

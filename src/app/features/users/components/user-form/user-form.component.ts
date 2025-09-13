@@ -13,6 +13,7 @@ import { UserService } from '../../services/user.service';
 export class UserFormComponent implements OnInit {
   userForm!: FormGroup;
   isEditMode = false;
+  user$!: Observable<User | null>;
 
   constructor(
     private fb: FormBuilder,
@@ -24,23 +25,21 @@ export class UserFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params
-      .pipe(
-        switchMap((params) => {
-          const id = params['id'];
-          if (id) {
-            this.isEditMode = true;
-            return this.userService.getUser(+id);
-          }
-          return of(null);
-        }),
-        tap((user) => {
-          if (user) {
-            this.userForm.patchValue(user);
-          }
-        })
-      )
-      .subscribe();
+    this.user$ = this.route.params.pipe(
+      switchMap((params) => {
+        const id = params['id'];
+        if (id) {
+          this.isEditMode = true;
+          return this.userService.getUser(+id);
+        }
+        return of(null);
+      }),
+      tap((user) => {
+        if (user) {
+          this.userForm.patchValue(user);
+        }
+      })
+    );
   }
 
   private initForm(): void {

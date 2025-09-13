@@ -13,6 +13,7 @@ import { CommentService } from '../../services/comment.service';
 export class CommentFormComponent implements OnInit {
   commentForm!: FormGroup;
   isEditMode = false;
+  comment$!: Observable<Comment | null>;
 
   constructor(
     private fb: FormBuilder,
@@ -24,23 +25,21 @@ export class CommentFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params
-      .pipe(
-        switchMap((params) => {
-          const id = params['id'];
-          if (id) {
-            this.isEditMode = true;
-            return this.commentService.getComment(+id);
-          }
-          return of(null);
-        }),
-        tap((comment) => {
-          if (comment) {
-            this.commentForm.patchValue(comment);
-          }
-        })
-      )
-      .subscribe();
+    this.comment$ = this.route.params.pipe(
+      switchMap((params) => {
+        const id = params['id'];
+        if (id) {
+          this.isEditMode = true;
+          return this.commentService.getComment(+id);
+        }
+        return of(null);
+      }),
+      tap((comment) => {
+        if (comment) {
+          this.commentForm.patchValue(comment);
+        }
+      })
+    );
   }
 
   private initForm(): void {

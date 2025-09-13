@@ -13,6 +13,7 @@ import { PostService } from '../../services/post.service';
 export class PostFormComponent implements OnInit {
   postForm!: FormGroup;
   isEditMode = false;
+  post$!: Observable<Post | null>;
 
   constructor(
     private fb: FormBuilder,
@@ -24,23 +25,21 @@ export class PostFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params
-      .pipe(
-        switchMap((params) => {
-          const id = params['id'];
-          if (id) {
-            this.isEditMode = true;
-            return this.postService.getPost(+id);
-          }
-          return of(null);
-        }),
-        tap((post) => {
-          if (post) {
-            this.postForm.patchValue(post);
-          }
-        })
-      )
-      .subscribe();
+    this.post$ = this.route.params.pipe(
+      switchMap((params) => {
+        const id = params['id'];
+        if (id) {
+          this.isEditMode = true;
+          return this.postService.getPost(+id);
+        }
+        return of(null);
+      }),
+      tap((post) => {
+        if (post) {
+          this.postForm.patchValue(post);
+        }
+      })
+    );
   }
 
   private initForm(): void {
