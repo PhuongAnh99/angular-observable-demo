@@ -1,0 +1,242 @@
+<div class="row">
+  <div class="col-12">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>{{ isEditMode ? "Edit User" : "Add New User" }}</h2>
+      <button class="btn btn-outline-secondary" routerLink="/users">
+        <i class="fas fa-arrow-left"></i> Back to Users
+      </button>
+    </div>
+
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">User Information</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="name" class="form-label">Name *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  formControlName="name"
+                />
+                <div
+                  class="invalid-feedback"
+                  *ngIf="
+                    userForm.get('name')?.invalid &&
+                    userForm.get('name')?.touched
+                  "
+                >
+                  Name is required
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="username" class="form-label">Username *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  formControlName="username"
+                />
+                <div
+                  class="invalid-feedback"
+                  *ngIf="
+                    userForm.get('username')?.invalid &&
+                    userForm.get('username')?.touched
+                  "
+                >
+                  Username is required
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email *</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  formControlName="email"
+                />
+                <div
+                  class="invalid-feedback"
+                  *ngIf="
+                    userForm.get('email')?.invalid &&
+                    userForm.get('email')?.touched
+                  "
+                >
+                  Valid email is required
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="phone" class="form-label">Phone</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="phone"
+                  formControlName="phone"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="website" class="form-label">Website</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="website"
+                  formControlName="website"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-3">
+        <div class="card-header">
+          <h5 class="mb-0">Company Information</h5>
+        </div>
+        <div class="card-body">
+          <div formGroupName="company">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="companyName" class="form-label"
+                    >Company Name</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="companyName"
+                    formControlName="name"
+                  />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="catchPhrase" class="form-label"
+                    >Catch Phrase</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="catchPhrase"
+                    formControlName="catchPhrase"
+                  />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="bs" class="form-label">BS</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="bs"
+                    formControlName="bs"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-3">
+        <div class="card-header">
+          <h5 class="mb-0">Address Information</h5>
+        </div>
+        <div class="card-body">
+          <div formGroupName="address">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="street" class="form-label">Street</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="street"
+                    formControlName="street"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="suite" class="form-label">Suite</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="suite"
+                    formControlName="suite"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="city" class="form-label">City</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="city"
+                    formControlName="city"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="zipcode" class="form-label">Zipcode</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="zipcode"
+                    formControlName="zipcode"
+                  />
+                </div>
+              </div>
+            </div>
+            <div formGroupName="geo">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="lat" class="form-label">Latitude</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lat"
+                      formControlName="lat"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="lng" class="form-label">Longitude</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lng"
+                      formControlName="lng"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="userForm.invalid"
+        >
+          {{ isEditMode ? "Update User" : "Create User" }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary ms-2"
+          routerLink="/users"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

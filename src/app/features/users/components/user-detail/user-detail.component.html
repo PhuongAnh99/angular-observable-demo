@@ -1,0 +1,77 @@
+<div class="row">
+  <div class="col-12">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>User Detail</h2>
+      <button class="btn btn-outline-secondary" routerLink="/users">
+        <i class="fas fa-arrow-left"></i> Back to Users
+      </button>
+    </div>
+
+    <div *ngIf="user$ | async as user" class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">{{ user.name }}</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Phone:</strong> {{ user.phone }}</p>
+            <p><strong>Website:</strong> {{ user.website }}</p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Company:</strong> {{ user.company.name }}</p>
+            <p><strong>Catch Phrase:</strong> {{ user.company.catchPhrase }}</p>
+            <p>
+              <strong>Address:</strong> {{ user.address.street }},
+              {{ user.address.city }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a [routerLink]="['edit']" class="btn btn-primary">Edit User</a>
+      </div>
+    </div>
+
+    <!-- User Posts Section -->
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">User Posts</h5>
+      </div>
+      <div class="card-body">
+        <div *ngIf="userPosts$ | async as posts; else loadingPosts">
+          <div *ngIf="posts.length > 0; else noPosts">
+            <div class="row">
+              <div class="col-md-6 mb-3" *ngFor="let post of posts">
+                <div class="card">
+                  <div class="card-body">
+                    <h6 class="card-title">{{ post.title }}</h6>
+                    <p class="card-text">
+                      {{ post.body | slice : 0 : 100 }}...
+                    </p>
+                    <a
+                      [routerLink]="['/posts', post.id]"
+                      class="btn btn-sm btn-outline-primary"
+                      >View Post</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #noPosts>
+            <p class="text-muted">No posts found for this user.</p>
+          </ng-template>
+        </div>
+        <ng-template #loadingPosts>
+          <div class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading posts...</span>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
