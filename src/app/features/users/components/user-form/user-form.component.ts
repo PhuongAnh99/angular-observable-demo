@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, switchMap, tap } from 'rxjs';
+import { Observable, switchMap, tap, of } from 'rxjs';
 import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 
@@ -25,21 +25,23 @@ export class UserFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.user$ = this.route.params.pipe(
-      switchMap((params) => {
-        const id = params['id'];
-        if (id) {
-          this.isEditMode = true;
-          return this.userService.getUser(+id);
-        }
-        return [];
-      }),
-      tap((user) => {
-        if (user) {
-          this.userForm.patchValue(user);
-        }
-      })
-    );
+    this.route.params
+      .pipe(
+        switchMap((params) => {
+          const id = params['id'];
+          if (id) {
+            this.isEditMode = true;
+            return this.userService.getUser(+id);
+          }
+          return of(null);
+        }),
+        tap((user) => {
+          if (user) {
+            this.userForm.patchValue(user);
+          }
+        })
+      )
+      .subscribe();
   }
 
   private initForm(): void {

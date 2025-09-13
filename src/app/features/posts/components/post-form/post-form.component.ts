@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, switchMap, tap } from 'rxjs';
+import { Observable, switchMap, tap, of } from 'rxjs';
 import { Post } from '../../models/post.model';
 import { PostService } from '../../services/post.service';
 
@@ -25,21 +25,23 @@ export class PostFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.post$ = this.route.params.pipe(
-      switchMap((params) => {
-        const id = params['id'];
-        if (id) {
-          this.isEditMode = true;
-          return this.postService.getPost(+id);
-        }
-        return [];
-      }),
-      tap((post) => {
-        if (post) {
-          this.postForm.patchValue(post);
-        }
-      })
-    );
+    this.route.params
+      .pipe(
+        switchMap((params) => {
+          const id = params['id'];
+          if (id) {
+            this.isEditMode = true;
+            return this.postService.getPost(+id);
+          }
+          return of(null);
+        }),
+        tap((post) => {
+          if (post) {
+            this.postForm.patchValue(post);
+          }
+        })
+      )
+      .subscribe();
   }
 
   private initForm(): void {

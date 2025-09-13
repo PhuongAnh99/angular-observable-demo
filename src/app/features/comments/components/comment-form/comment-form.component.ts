@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, switchMap, tap } from 'rxjs';
+import { Observable, switchMap, tap, of } from 'rxjs';
 import { Comment } from '../../models/comment.model';
 import { CommentService } from '../../services/comment.service';
 
@@ -25,21 +25,23 @@ export class CommentFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.comment$ = this.route.params.pipe(
-      switchMap((params) => {
-        const id = params['id'];
-        if (id) {
-          this.isEditMode = true;
-          return this.commentService.getComment(+id);
-        }
-        return [];
-      }),
-      tap((comment) => {
-        if (comment) {
-          this.commentForm.patchValue(comment);
-        }
-      })
-    );
+    this.route.params
+      .pipe(
+        switchMap((params) => {
+          const id = params['id'];
+          if (id) {
+            this.isEditMode = true;
+            return this.commentService.getComment(+id);
+          }
+          return of(null);
+        }),
+        tap((comment) => {
+          if (comment) {
+            this.commentForm.patchValue(comment);
+          }
+        })
+      )
+      .subscribe();
   }
 
   private initForm(): void {
