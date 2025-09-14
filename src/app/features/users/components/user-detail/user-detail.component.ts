@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, switchMap } from 'rxjs';
+import { Observable, switchMap, combineLatest, map, filter } from 'rxjs';
 import { User } from '../../models/user.model';
 import { Post } from '../../../posts/models/post.model';
 import { UserService } from '../../services/user.service';
@@ -22,8 +22,16 @@ export class UserDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.user$ = this.route.params.pipe(
-      switchMap((params) => this.userService.getUser(+params['id']))
+    this.user$ = combineLatest([
+      this.route.params,
+      this.userService.getUsers(),
+    ]).pipe(
+      map(([params, users]) => {
+        const userId = +params['id'];
+        return users.find((user) => user.id === userId);
+      }),
+      filter((user) => user !== undefined),
+      map((user) => user!)
     );
 
     this.userPosts$ = this.route.params.pipe(

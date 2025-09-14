@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, switchMap } from 'rxjs';
+import { Observable, switchMap, combineLatest, map, filter } from 'rxjs';
 import { Post } from '../../models/post.model';
 import { Comment } from '../../../comments/models/comment.model';
 import { PostService } from '../../services/post.service';
@@ -22,8 +22,16 @@ export class PostDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.post$ = this.route.params.pipe(
-      switchMap((params) => this.postService.getPost(+params['id']))
+    this.post$ = combineLatest([
+      this.route.params,
+      this.postService.getPosts(),
+    ]).pipe(
+      map(([params, posts]) => {
+        const postId = +params['id'];
+        return posts.find((post) => post.id === postId);
+      }),
+      filter((post) => post !== undefined),
+      map((post) => post!)
     );
 
     this.postComments$ = this.route.params.pipe(
